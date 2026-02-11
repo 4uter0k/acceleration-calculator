@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор расходников</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: white;
+            padding: 20px;
+            /* Фоновая картинка - теперь видна полностью */
+            background-image: url('https://i.yapx.ru/c5erG.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            /* УБРАЛ БЕЛЫЙ ФОН - теперь полностью прозрачный */
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            /* ЗАГОЛОВОК БЕЛЫМ ЦВЕТОМ - УВЕЛИЧЕННЫЙ ШРИФТ */
+            color: white;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
+            /* УВЕЛИЧЕННЫЙ ШРИФТ ДЛЯ ГЛАВНОГО ЗАГОЛОВКА */
+            font-size: 36px;
+        }
+        
+        .main-accelerators {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-accelerators {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .accelerator-block {
+            border: 2px solid rgba(221, 221, 221, 0.5);
+            border-radius: 8px;
+            padding: 25px;
+            /* ФОН БЛОКОВ 0.7 - ПРОЗРАЧНЫЙ */
+            background-color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            flex-direction: column;
+            height: 850px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .accelerator-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            /* ТЕКСТ ЗАГОЛОВКОВ БЛОКОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            color: #2c3e50;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .accelerator-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: 70px 100px 80px;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .time-label {
+            font-weight: bold;
+            font-size: 16px;
+            text-align: right;
+            /* ТЕКСТ МЕТОК - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            color: #2c3e50;
+        }
+        
+        .input-field {
+            padding: 10px;
+            border: 1px solid rgba(221, 221, 221, 0.85);
+            border-radius: 5px;
+            text-align: right;
+            font-size: 16px;
+            width: 100%;
+            /* Фон полей ввода */
+            background-color: rgba(255, 255, 255, 0.9);
+            /* ТЕКСТ В ПОЛЯХ ВВОДА - ЧЕРНЫЙ */
+            color: #2c3e50;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            /* ТЕКСТ РЕЗУЛЬТАТОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            color: #2c3e50;
+            font-size: 16px;
+            text-align: right;
+            min-width: 80px;
+        }
+        
+        .accelerator-total {
+            background-color: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .secondary-accelerators {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 1200px) {
+            .secondary-accelerators {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .secondary-accelerators {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .secondary-accelerator {
+            border: 2px solid rgba(221, 221, 221, 0.5);
+            border-radius: 8px;
+            padding: 25px;
+            /* ФОН БЛОКОВ 0.7 - ПРОЗРАЧНЫЙ */
+            background-color: rgba(255, 255, 255, 0.85);
+            height: 700px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .secondary-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            /* ТЕКСТ ЗАГОЛОВКОВ БЛОКОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            color: #2c3e50;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .xp-enka-section {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .xp-enka-title {
+            text-align: center;
+            margin-bottom: 30px;
+            /* БЕЛЫЙ ЦВЕТ для заголовка раздела - УВЕЛИЧЕННЫЙ ШРИФТ */
+            color: white;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
+            /* УВЕЛИЧЕННЫЙ ШРИФТ, НО МЕНЬШЕ ЧЕМ У ГЛАВНОГО ЗАГОЛОВКА */
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .xp-enka-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .xp-enka-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .xp-enka-item {
+            border: 2px solid rgba(221, 221, 221, 0.5);
+            border-radius: 8px;
+            padding: 25px;
+            /* ФОН БЛОКОВ 0.7 - ПРОЗРАЧНЫЙ */
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .xp-enka-block-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            /* ТЕКСТ ЗАГОЛОВКОВ БЛОКОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            color: #2c3e50;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .xp-enka-row {
+            display: grid;
+            grid-template-columns: 200px 120px 100px;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .xp-enka-label {
+            font-weight: bold;
+            font-size: 16px;
+            /* ТЕКСТ МЕТОК - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            color: #2c3e50;
+        }
+        
+        .total-row {
+            background-color: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: auto; /* Ключевое изменение - прижимает к низу */
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .reset-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .reset-btn {
+            padding: 15px 50px;
+            background-color: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .reset-btn:hover {
+            background-color: rgba(192, 57, 43, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .summary {
+            padding: 30px;
+            /* Без белого фона - только темный полупрозрачный */
+            background-color: rgba(44, 62, 80, 1);
+            color: white;
+            border-radius: 10px;
+            margin-top: 40px;
+            border: 2px solid rgba(52, 152, 219, 0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .summary-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ecf0f1;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            /* УВЕЛИЧЕННЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА СВОДКИ */
+            font-size: 26px;
+            font-weight: bold;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .summary-item {
+            /* Без белого фона - только темный полупрозрачный */
+            background-color: rgba(52, 73, 94, 1);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(74, 101, 114, 0.5);
+        }
+        
+        .summary-item-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ecf0f1;
+            font-size: 18px;
+        }
+        
+        .summary-item-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        /* Стили для скроллбара */
+        .accelerator-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .accelerator-content::-webkit-scrollbar-track {
+            background: rgba(241, 241, 241, 0.3);
+            border-radius: 4px;
+        }
+        
+        .accelerator-content::-webkit-scrollbar-thumb {
+            background: rgba(52, 152, 219, 0.6);
+            border-radius: 4px;
+        }
+        
+        .accelerator-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(41, 128, 185, 0.85);
+        }
+        
+        /* Информационное сообщение */
+        .info-message {
+            text-align: center;
+            color: white;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.85);
+        }
+        
+        /* Усиливаем читаемость текста в полях ввода */
+        .input-field:focus {
+            background-color: rgba(255, 255, 255, 0.95);
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        /* Выравнивание контента в блоках опыта и энергии */
+        #xp-inputs, #enka-inputs {
+            flex: 1;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Пустые строки для выравнивания */
+        .empty-row {
+            height: 48px; /* Высота одной строки с margin-bottom */
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор расходников</h1>
+        
+        <!-- Верхний ряд: два основных ускорителя -->
+        <div class="main-accelerators">
+            <!-- Универсальные ускорения -->
+            <div class="accelerator-block">
+                <div class="accelerator-title">Универсальные ускорения</div>
+                <div class="accelerator-content" id="universal-accelerators">
+                    <!-- Поля ввода будут добавлены через JavaScript -->
+                </div>
+                <div class="accelerator-total">
+                    <span>Итого:</span>
+                    <span id="universal-total">0.00 дн</span>
+                </div>
+            </div>
+            
+            <!-- Ускорения исследования -->
+            <div class="accelerator-block">
+                <div class="accelerator-title">Ускорения исследования</div>
+                <div class="accelerator-content" id="isla-accelerators">
+                    <!-- Поля ввода будут добавлены через JavaScript -->
+                </div>
+                <div class="accelerator-total">
+                    <span>Итого:</span>
+                    <span id="isla-total">0.00 дн</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Нижний ряд: три ускорителя в три столбца -->
+        <div class="secondary-accelerators">
+            <!-- Ускорения тренировки -->
+            <div class="secondary-accelerator">
+                <div class="secondary-title">Ускорения тренировки</div>
+                <div class="accelerator-content" id="training-accelerators">
+                    <!-- Поля ввода будут добавлены через JavaScript -->
+                </div>
+                <div class="accelerator-total">
+                    <span>Итого:</span>
+                    <span id="training-total">0.00 дн</span>
+                </div>
+            </div>
+            
+            <!-- Ускорения пакты -->
+            <div class="secondary-accelerator">
+                <div class="secondary-title">Ускорения создания</div>
+                <div class="accelerator-content" id="pact-accelerators">
+                    <!-- Поля ввода будут добавлены через JavaScript -->
+                </div>
+                <div class="accelerator-total">
+                    <span>Итого:</span>
+                    <span id="pact-total">0.00 дн</span>
+                </div>
+            </div>
+            
+            <!-- Ускорения амуниция -->
+            <div class="secondary-accelerator">
+                <div class="secondary-title">Ускорения изготовления</div>
+                <div class="accelerator-content" id="ammo-accelerators">
+                    <!-- Поля ввода будут добавлены через JavaScript -->
+                </div>
+                <div class="accelerator-total">
+                    <span>Итого:</span>
+                    <span id="ammo-total">0.00 дн</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Опыт фамов и энка -->
+        <div class="xp-enka-section">
+            <div class="xp-enka-title">Опыт фамильяров и энергия</div>
+            <div class="xp-enka-grid">
+                <!-- Опыт фамильяров -->
+                <div class="xp-enka-item">
+                    <div class="xp-enka-block-title">Опыт фамильяров</div>
+                    <div id="xp-inputs">
+                        <!-- Поля ввода будут добавлены через JavaScript -->
+                    </div>
+                    <div class="total-row">
+                        <span>Итого опыта:</span>
+                        <span id="total-xp">0</span>
+                    </div>
+                </div>
+                
+                <!-- Энергия -->
+                <div class="xp-enka-item">
+                    <div class="xp-enka-block-title">Энергия</div>
+                    <div id="enka-inputs">
+                        <!-- Поля ввода будут добавлены через JavaScript -->
+                    </div>
+                    <div class="total-row">
+                        <span>Итого энергии:</span>
+                        <span id="total-enka">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="info-message">Подсчет происходит автоматически при вводе значений</div>
+        </div>
+        
+        <!-- Кнопка сброса -->
+        <div class="reset-button-container">
+            <button class="reset-btn" onclick="resetAll()">Сбросить все</button>
+        </div>
+        
+        <!-- Общая сводка -->
+        <div class="summary">
+            <div class="summary-title">Общая сводка</div>
+            <div class="summary-grid" id="summary-container">
+                <!-- Сводка будет добавлена через JavaScript -->
+                <div class="summary-item">
+                    <div class="summary-item-title">Универсальные ускорения</div>
+                    <div class="summary-item-value">0д 0ч 0м</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-item-title">Ускорения исследования</div>
+                    <div class="summary-item-value">0д 0ч 0м</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-item-title">Ускорения тренировки</div>
+                    <div class="summary-item-value">0д 0ч 0м</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-item-title">Ускорения создания</div>
+                    <div class="summary-item-value">0д 0ч 0м</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-item-title">Ускорения изготовления</div>
+                    <div class="summary-item-value">0д 0ч 0м</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-item-title">Опыт фамильяров</div>
+                    <div class="summary-item-value">0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-item-title">Энергия</div>
+                    <div class="summary-item-value">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <script>
+        // Данные для ускорителей
+        const acceleratorTypes = [
+            { 
+                id: 'universal', 
+                name: 'Универсальные ускорения',
+                containerId: 'universal-accelerators',
+                totalId: 'universal-total'
+            },
+            { 
+                id: 'isla', 
+                name: 'Ускорения исследования',
+                containerId: 'isla-accelerators',
+                totalId: 'isla-total'
+            },
+            { 
+                id: 'training', 
+                name: 'Ускорения тренировки',
+                containerId: 'training-accelerators',
+                totalId: 'training-total'
+            },
+            { 
+                id: 'pact', 
+                name: 'Ускорения создания',
+                containerId: 'pact-accelerators',
+                totalId: 'pact-total'
+            },
+            { 
+                id: 'ammo', 
+                name: 'Ускорения изготовления',
+                containerId: 'ammo-accelerators',
+                totalId: 'ammo-total'
+            }
+        ];
+
+        // Временные интервалы для ускорителей
+        const timeIntervals = [
+            { label: '1м', minutes: 1 },
+            { label: '3м', minutes: 3 },
+            { label: '5м', minutes: 5 },
+            { label: '10м', minutes: 10 },
+            { label: '15м', minutes: 15 },
+            { label: '30м', minutes: 30 },
+            { label: '1ч', minutes: 60 },
+            { label: '3ч', minutes: 180 },
+            { label: '8ч', minutes: 480 },
+            { label: '15ч', minutes: 900 },
+            { label: '1д', minutes: 1440 },
+            { label: '3д', minutes: 4320 },
+            { label: '7д', minutes: 10080 },
+            { label: '30д', minutes: 43200 }
+        ];
+
+        // Данные для опыта
+        const xpItems = [
+            { label: 'Зелье (×50 опыта)', multiplier: 50 },
+            { label: 'Элексир (×2000 опыта)', multiplier: 2000 }
+        ];
+
+        // Данные для энки
+        const enkaItems = [
+            { label: '1000', value: 1000 },
+            { label: '2000', value: 2000 },
+            { label: '5000', value: 5000 },
+            { label: '10000', value: 10000 },
+            { label: '20000', value: 20000 },
+            { label: '50000', value: 50000 }
+        ];
+
+        // Инициализация полей ввода
+        function initializeInputs() {
+            // Создаем поля для ускорителей
+            acceleratorTypes.forEach(type => {
+                const container = document.getElementById(type.containerId);
+                container.innerHTML = '';
+                
+                timeIntervals.forEach(interval => {
+                    const inputRow = document.createElement('div');
+                    inputRow.className = 'input-grid';
+                    inputRow.innerHTML = `
+                        <div class="time-label">${interval.label}:</div>
+                        <input type="number" min="0" 
+                               data-type="${type.id}" 
+                               data-minutes="${interval.minutes}" 
+                               class="input-field accelerator-input" 
+                               value="0">
+                        <div class="result-value" 
+                             id="${type.id}-${interval.minutes}-result">0</div>
+                    `;
+                    container.appendChild(inputRow);
+                });
+            });
+
+            // Создаем поля для опыта
+            const xpContainer = document.getElementById('xp-inputs');
+            xpContainer.innerHTML = '';
+            
+            xpItems.forEach(item => {
+                const inputRow = document.createElement('div');
+                inputRow.className = 'xp-enka-row';
+                inputRow.innerHTML = `
+                    <div class="xp-enka-label">${item.label}</div>
+                    <input type="number" min="0" 
+                           data-multiplier="${item.multiplier}" 
+                           class="input-field xp-input" 
+                           value="0">
+                    <div class="result-value" 
+                         id="xp-${item.multiplier}-result">0</div>
+                `;
+                xpContainer.appendChild(inputRow);
+            });
+
+            // Создаем поля для энки
+            const enkaContainer = document.getElementById('enka-inputs');
+            enkaContainer.innerHTML = '';
+            
+            enkaItems.forEach(item => {
+                const inputRow = document.createElement('div');
+                inputRow.className = 'xp-enka-row';
+                inputRow.innerHTML = `
+                    <div class="xp-enka-label">${item.label}</div>
+                    <input type="number" min="0" 
+                           data-value="${item.value}" 
+                           class="input-field enka-input" 
+                           value="0">
+                    <div class="result-value" 
+                         id="enka-${item.value}-result">0</div>
+                `;
+                enkaContainer.appendChild(inputRow);
+            });
+        }
+
+        // Форматирование времени (дни, часы, минуты)
+        function formatTime(totalMinutes) {
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = Math.round(totalMinutes % 60);
+            
+            return `${days}д ${hours}ч ${minutes}м`;
+        }
+
+        // Расчет всех значений
+        function calculate() {
+            let totalEnka = 0;
+            let totalXP = 0;
+            
+            // Объект для хранения результатов по типам ускорителей
+            const acceleratorResults = {};
+            
+            // Расчет ускорителей
+            acceleratorTypes.forEach(type => {
+                let totalMinutes = 0;
+                
+                // Суммируем все ускорители данного типа
+                const inputs = document.querySelectorAll(`.accelerator-input[data-type="${type.id}"]`);
+                inputs.forEach(input => {
+                    const count = parseFloat(input.value) || 0;
+                    const minutes = parseFloat(input.dataset.minutes);
+                    const resultSpan = document.getElementById(`${type.id}-${minutes}-result`);
+                    
+                    const itemMinutes = count * minutes;
+                    totalMinutes += itemMinutes;
+                    
+                    // Показываем результат для каждого поля
+                    resultSpan.textContent = itemMinutes.toFixed(0);
+                });
+                
+                // Сохраняем результат для сводки
+                acceleratorResults[type.id] = totalMinutes;
+                
+                // Общий итог для типа ускорителей
+                const totalSpan = document.getElementById(type.totalId);
+                const totalDays = totalMinutes / 1440;
+                totalSpan.textContent = totalDays.toFixed(2) + ' дн';
+            });
+            
+            // Расчет опыта фамов - БЕЗ ОКРУГЛЕНИЯ
+            const xpInputs = document.querySelectorAll('.xp-input');
+            xpInputs.forEach(input => {
+                const count = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const resultSpan = document.getElementById(`xp-${multiplier}-result`);
+                
+                const xpValue = count * multiplier;
+                totalXP += xpValue;
+                
+                // Отображаем без округления
+                resultSpan.textContent = xpValue.toLocaleString('ru-RU', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                });
+            });
+            
+            // Отображаем итог опыта без округления
+            document.getElementById('total-xp').textContent = totalXP.toLocaleString('ru-RU', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            });
+            
+            // Расчет энки - БЕЗ ОКРУГЛЕНИЯ
+            const enkaInputs = document.querySelectorAll('.enka-input');
+            enkaInputs.forEach(input => {
+                const count = parseFloat(input.value) || 0;
+                const value = parseFloat(input.dataset.value);
+                const resultSpan = document.getElementById(`enka-${value}-result`);
+                
+                const itemTotal = count * value;
+                totalEnka += itemTotal;
+                
+                // Отображаем без округления
+                resultSpan.textContent = itemTotal.toLocaleString('ru-RU', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                });
+            });
+            
+            // Отображаем итог энки без округления
+            document.getElementById('total-enka').textContent = totalEnka.toLocaleString('ru-RU', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            });
+            
+            // Обновление сводки
+            updateSummary(acceleratorResults, totalXP, totalEnka);
+        }
+
+        // Обновление общей сводки
+        function updateSummary(acceleratorResults, totalXP, totalEnka) {
+            const summaryContainer = document.getElementById('summary-container');
+            summaryContainer.innerHTML = '';
+            
+            // Добавляем ускорители в сводку
+            acceleratorTypes.forEach(type => {
+                const totalMinutes = acceleratorResults[type.id] || 0;
+                
+                const summaryItem = document.createElement('div');
+                summaryItem.className = 'summary-item';
+                summaryItem.innerHTML = `
+                    <div class="summary-item-title">${type.name}</div>
+                    <div class="summary-item-value">${formatTime(totalMinutes)}</div>
+                `;
+                summaryContainer.appendChild(summaryItem);
+            });
+            
+            // Добавляем опыт фамильяров
+            const xpSummaryItem = document.createElement('div');
+            xpSummaryItem.className = 'summary-item';
+            xpSummaryItem.innerHTML = `
+                <div class="summary-item-title">Опыт фамильяров</div>
+                <div class="summary-item-value">${totalXP.toLocaleString('ru-RU', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                })}</div>
+            `;
+            summaryContainer.appendChild(xpSummaryItem);
+            
+            // Добавляем энергию
+            const enkaSummaryItem = document.createElement('div');
+            enkaSummaryItem.className = 'summary-item';
+            enkaSummaryItem.innerHTML = `
+                <div class="summary-item-title">Энергия</div>
+                <div class="summary-item-value">${totalEnka.toLocaleString('ru-RU', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                })}</div>
+            `;
+            summaryContainer.appendChild(enkaSummaryItem);
+        }
+
+        // Сброс всех значений
+        function resetAll() {
+            // Сброс ускорителей
+            const acceleratorInputs = document.querySelectorAll('.accelerator-input');
+            acceleratorInputs.forEach(input => {
+                input.value = 0;
+            });
+            
+            // Сброс результатов ускорителей
+            const acceleratorResults = document.querySelectorAll('[id$="-result"]');
+            acceleratorResults.forEach(span => {
+                span.textContent = '0';
+            });
+            
+            // Сброс итогов ускорителей
+            acceleratorTypes.forEach(type => {
+                const totalSpan = document.getElementById(type.totalId);
+                if (totalSpan) totalSpan.textContent = '0.00 дн';
+            });
+            
+            // Сброс опыта
+            const xpInputs = document.querySelectorAll('.xp-input');
+            xpInputs.forEach(input => {
+                input.value = 0;
+            });
+            
+            // Сброс энки
+            const enkaInputs = document.querySelectorAll('.enka-input');
+            enkaInputs.forEach(input => {
+                input.value = 0;
+            });
+            
+            document.getElementById('total-xp').textContent = '0';
+            document.getElementById('total-enka').textContent = '0';
+            
+            // Обновление сводки
+            updateSummary({}, 0, 0);
+        }
+
+        // Автоматический расчет при изменении значений
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeInputs();
+            
+            // Добавляем обработчики для автоматического расчета
+            document.addEventListener('input', function(e) {
+                if (e.target.classList.contains('accelerator-input') || 
+                    e.target.classList.contains('xp-input') ||
+                    e.target.classList.contains('enka-input')) {
+                    calculate();
+                }
+            });
+            
+            // Первоначальный расчет
+            calculate();
+        });
+    </script>
+</body>
+</html>
