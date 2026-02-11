@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Калькулятор расходников</title>
     <style>
         * {
@@ -15,7 +15,7 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
             color: white;
-            padding: 20px;
+            padding: 10px; /* Уменьшил на мобильных */
             /* Фоновая картинка - теперь видна полностью */
             background-image: url('https://i.yapx.ru/c5erG.png');
             background-size: cover;
@@ -27,21 +27,32 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            /* УБРАЛ БЕЛЫЙ ФОН - теперь полностью прозрачный */
-            padding: 30px;
+            padding: 15px; /* Уменьшил на мобильных */
             border-radius: 10px;
         }
         
         h1 {
             text-align: center;
-            margin-bottom: 40px;
-            /* ЗАГОЛОВОК БЕЛЫМ ЦВЕТОМ - УВЕЛИЧЕННЫЙ ШРИФТ */
+            margin-bottom: 30px;
             color: white;
             border-bottom: 3px solid #3498db;
             padding-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
-            /* УВЕЛИЧЕННЫЙ ШРИФТ ДЛЯ ГЛАВНОГО ЗАГОЛОВКА */
-            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            font-size: 28px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 36px; /* Оригинальный размер на планшетах и выше */
+            }
+            
+            body {
+                padding: 20px;
+            }
+            
+            .container {
+                padding: 30px;
+            }
         }
         
         .main-accelerators {
@@ -60,224 +71,360 @@
         .accelerator-block {
             border: 2px solid rgba(221, 221, 221, 0.5);
             border-radius: 8px;
-            padding: 25px;
-            /* ФОН БЛОКОВ 0.7 - ПРОЗРАЧНЫЙ */
-            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px; /* Уменьшил для мобильных */
+            background-color: rgba(255, 255, 255, 0.9); /* Менее прозрачный */
             display: flex;
             flex-direction: column;
-            height: 850px;
+            height: auto; /* Авто-высота на мобильных */
+            min-height: 600px; /* Минимальная высота */
+            max-height: 800px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
+        @media (min-width: 768px) {
+            .accelerator-block {
+                height: 850px; /* Оригинальная высота на десктопе */
+                padding: 25px;
+            }
+        }
+        
         .accelerator-title {
-            font-size: 22px;
+            font-size: 20px; /* Уменьшил для мобильных */
             font-weight: bold;
-            margin-bottom: 25px;
-            /* ТЕКСТ ЗАГОЛОВКОВ БЛОКОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            margin-bottom: 20px;
             color: #2c3e50;
             text-align: center;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #3498db;
+        }
+        
+        @media (min-width: 768px) {
+            .accelerator-title {
+                font-size: 22px;
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+            }
         }
         
         .accelerator-content {
             flex: 1;
             overflow-y: auto;
-            padding-right: 10px;
+            padding-right: 5px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .accelerator-content {
+                padding-right: 10px;
+            }
         }
         
         .input-grid {
             display: grid;
-            grid-template-columns: 70px 100px 80px;
-            gap: 15px;
+            grid-template-columns: 60px 80px 70px; /* Уменьшил для мобильных */
+            gap: 8px; /* Уменьшил для мобильных */
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .input-grid {
+                grid-template-columns: 70px 100px 80px;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
         }
         
         .time-label {
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px; /* Уменьшил для мобильных */
             text-align: right;
-            /* ТЕКСТ МЕТОК - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
             color: #2c3e50;
         }
         
+        @media (min-width: 768px) {
+            .time-label {
+                font-size: 16px;
+            }
+        }
+        
         .input-field {
-            padding: 10px;
-            border: 1px solid rgba(221, 221, 221, 0.85);
+            padding: 8px; /* Уменьшил для мобильных */
+            border: 1px solid rgba(221, 221, 221, 0.7);
             border-radius: 5px;
             text-align: right;
-            font-size: 16px;
+            font-size: 14px; /* Уменьшил для мобильных */
             width: 100%;
-            /* Фон полей ввода */
-            background-color: rgba(255, 255, 255, 0.9);
-            /* ТЕКСТ В ПОЛЯХ ВВОДА - ЧЕРНЫЙ */
+            background-color: rgba(255, 255, 255, 0.95);
             color: #2c3e50;
+        }
+        
+        @media (min-width: 768px) {
+            .input-field {
+                padding: 10px;
+                font-size: 16px;
+            }
         }
         
         .result-value {
             font-weight: bold;
-            /* ТЕКСТ РЕЗУЛЬТАТОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
             color: #2c3e50;
-            font-size: 16px;
+            font-size: 14px; /* Уменьшил для мобильных */
             text-align: right;
-            min-width: 80px;
+            min-width: 70px; /* Уменьшил для мобильных */
+            white-space: nowrap; /* Запрет переноса */
+        }
+        
+        @media (min-width: 768px) {
+            .result-value {
+                font-size: 16px;
+                min-width: 80px;
+            }
         }
         
         .accelerator-total {
             background-color: rgba(44, 62, 80, 0.9);
             color: white;
-            padding: 15px;
+            padding: 12px; /* Уменьшил для мобильных */
             border-radius: 5px;
-            margin-top: 20px;
+            margin-top: 15px; /* Уменьшил для мобильных */
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px; /* Уменьшил для мобильных */
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .secondary-accelerators {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        @media (max-width: 1200px) {
-            .secondary-accelerators {
-                grid-template-columns: repeat(2, 1fr);
+        @media (min-width: 768px) {
+            .accelerator-total {
+                padding: 15px;
+                margin-top: 20px;
+                font-size: 18px;
             }
         }
         
-        @media (max-width: 768px) {
+        .secondary-accelerators {
+            display: grid;
+            grid-template-columns: 1fr; /* На мобильных - 1 колонка */
+            gap: 20px; /* Уменьшил для мобильных */
+            margin-bottom: 30px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
             .secondary-accelerators {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(3, 1fr); /* На десктопе - 3 колонки */
+                gap: 30px;
+                margin-bottom: 40px;
+            }
+        }
+        
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .secondary-accelerators {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
         
         .secondary-accelerator {
             border: 2px solid rgba(221, 221, 221, 0.5);
             border-radius: 8px;
-            padding: 25px;
-            /* ФОН БЛОКОВ 0.7 - ПРОЗРАЧНЫЙ */
-            background-color: rgba(255, 255, 255, 0.85);
-            height: 700px;
+            padding: 20px; /* Уменьшил для мобильных */
+            background-color: rgba(255, 255, 255, 0.9); /* Менее прозрачный */
+            height: auto; /* Авто-высота на мобильных */
+            min-height: 500px; /* Минимальная высота */
+            max-height: 600px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
+        @media (min-width: 768px) {
+            .secondary-accelerator {
+                height: 700px; /* Оригинальная высота на десктопе */
+                padding: 25px;
+            }
+        }
+        
         .secondary-title {
-            font-size: 20px;
+            font-size: 18px; /* Уменьшил для мобильных */
             font-weight: bold;
-            margin-bottom: 25px;
-            /* ТЕКСТ ЗАГОЛОВКОВ БЛОКОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            margin-bottom: 20px; /* Уменьшил для мобильных */
             color: #2c3e50;
             text-align: center;
-            padding-bottom: 15px;
+            padding-bottom: 10px; /* Уменьшил для мобильных */
             border-bottom: 2px solid #3498db;
         }
         
+        @media (min-width: 768px) {
+            .secondary-title {
+                font-size: 20px;
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+            }
+        }
+        
         .xp-enka-section {
-            margin-top: 40px;
-            margin-bottom: 40px;
+            margin-top: 30px; /* Уменьшил для мобильных */
+            margin-bottom: 30px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .xp-enka-section {
+                margin-top: 40px;
+                margin-bottom: 40px;
+            }
         }
         
         .xp-enka-title {
             text-align: center;
-            margin-bottom: 30px;
-            /* БЕЛЫЙ ЦВЕТ для заголовка раздела - УВЕЛИЧЕННЫЙ ШРИФТ */
+            margin-bottom: 20px; /* Уменьшил для мобильных */
             color: white;
-            padding-bottom: 15px;
+            padding-bottom: 10px; /* Уменьшил для мобильных */
             border-bottom: 2px solid #3498db;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85);
-            /* УВЕЛИЧЕННЫЙ ШРИФТ, НО МЕНЬШЕ ЧЕМ У ГЛАВНОГО ЗАГОЛОВКА */
-            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            font-size: 24px; /* Уменьшил для мобильных */
             font-weight: bold;
+        }
+        
+        @media (min-width: 768px) {
+            .xp-enka-title {
+                font-size: 28px;
+                margin-bottom: 30px;
+                padding-bottom: 15px;
+            }
         }
         
         .xp-enka-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+            grid-template-columns: 1fr; /* На мобильных - 1 колонка */
+            gap: 20px; /* Уменьшил для мобильных */
         }
         
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
             .xp-enka-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr); /* На десктопе - 2 колонки */
+                gap: 30px;
             }
         }
         
         .xp-enka-item {
             border: 2px solid rgba(221, 221, 221, 0.5);
             border-radius: 8px;
-            padding: 25px;
-            /* ФОН БЛОКОВ 0.7 - ПРОЗРАЧНЫЙ */
-            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px; /* Уменьшил для мобильных */
+            background-color: rgba(255, 255, 255, 0.9); /* Менее прозрачный */
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
         }
         
+        @media (min-width: 768px) {
+            .xp-enka-item {
+                padding: 25px;
+            }
+        }
+        
         .xp-enka-block-title {
-            font-size: 20px;
+            font-size: 18px; /* Уменьшил для мобильных */
             font-weight: bold;
-            margin-bottom: 25px;
-            /* ТЕКСТ ЗАГОЛОВКОВ БЛОКОВ - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            margin-bottom: 20px; /* Уменьшил для мобильных */
             color: #2c3e50;
             text-align: center;
-            padding-bottom: 15px;
+            padding-bottom: 10px; /* Уменьшил для мобильных */
             border-bottom: 2px solid #3498db;
+        }
+        
+        @media (min-width: 768px) {
+            .xp-enka-block-title {
+                font-size: 20px;
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+            }
         }
         
         .xp-enka-row {
             display: grid;
-            grid-template-columns: 200px 120px 100px;
-            gap: 15px;
+            grid-template-columns: 120px 80px 70px; /* Уменьшил для мобильных */
+            gap: 8px; /* Уменьшил для мобильных */
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .xp-enka-row {
+                grid-template-columns: 200px 120px 100px;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
         }
         
         .xp-enka-label {
             font-weight: bold;
-            font-size: 16px;
-            /* ТЕКСТ МЕТОК - ЧЕРНЫЙ ДЛЯ ЧИТАЕМОСТИ */
+            font-size: 14px; /* Уменьшил для мобильных */
             color: #2c3e50;
+            white-space: nowrap; /* Запрет переноса */
+        }
+        
+        @media (min-width: 768px) {
+            .xp-enka-label {
+                font-size: 16px;
+            }
         }
         
         .total-row {
             background-color: rgba(44, 62, 80, 0.9);
             color: white;
-            padding: 15px;
+            padding: 12px; /* Уменьшил для мобильных */
             border-radius: 5px;
-            margin-top: auto; /* Ключевое изменение - прижимает к низу */
+            margin-top: auto; /* Прижимает к низу */
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px; /* Уменьшил для мобильных */
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
+        @media (min-width: 768px) {
+            .total-row {
+                padding: 15px;
+                font-size: 18px;
+            }
+        }
+        
         .reset-button-container {
             display: flex;
             justify-content: center;
-            margin-top: 40px;
-            margin-bottom: 30px;
+            margin-top: 30px; /* Уменьшил для мобильных */
+            margin-bottom: 20px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .reset-button-container {
+                margin-top: 40px;
+                margin-bottom: 30px;
+            }
         }
         
         .reset-btn {
-            padding: 15px 50px;
+            padding: 12px 40px; /* Уменьшил для мобильных */
             background-color: rgba(231, 76, 60, 0.9);
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px; /* Уменьшил для мобильных */
             transition: all 0.3s;
             font-weight: bold;
+            width: 100%; /* На мобильных - на всю ширину */
+            max-width: 300px; /* Но не больше 300px */
+        }
+        
+        @media (min-width: 768px) {
+            .reset-btn {
+                padding: 15px 50px;
+                font-size: 18px;
+                width: auto;
+                max-width: none;
+            }
         }
         
         .reset-btn:hover {
@@ -287,57 +434,101 @@
         }
         
         .summary {
-            padding: 30px;
-            /* Без белого фона - только темный полупрозрачный */
+            padding: 20px; /* Уменьшил для мобильных */
             background-color: rgba(44, 62, 80, 1);
             color: white;
             border-radius: 10px;
-            margin-top: 40px;
+            margin-top: 30px; /* Уменьшил для мобильных */
             border: 2px solid rgba(52, 152, 219, 0.5);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         
+        @media (min-width: 768px) {
+            .summary {
+                padding: 30px;
+                margin-top: 40px;
+            }
+        }
+        
         .summary-title {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* Уменьшил для мобильных */
             color: #ecf0f1;
-            padding-bottom: 15px;
+            padding-bottom: 10px; /* Уменьшил для мобильных */
             border-bottom: 2px solid #3498db;
-            /* УВЕЛИЧЕННЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА СВОДКИ */
-            font-size: 26px;
+            font-size: 22px; /* Уменьшил для мобильных */
             font-weight: bold;
+        }
+        
+        @media (min-width: 768px) {
+            .summary-title {
+                font-size: 26px;
+                margin-bottom: 30px;
+                padding-bottom: 15px;
+            }
         }
         
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr; /* На мобильных - 1 колонка */
+            gap: 15px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .summary-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
         }
         
         .summary-item {
-            /* Без белого фона - только темный полупрозрачный */
             background-color: rgba(52, 73, 94, 1);
-            padding: 20px;
+            padding: 15px; /* Уменьшил для мобильных */
             border-radius: 8px;
             border: 1px solid rgba(74, 101, 114, 0.5);
         }
         
+        @media (min-width: 768px) {
+            .summary-item {
+                padding: 20px;
+            }
+        }
+        
         .summary-item-title {
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Уменьшил для мобильных */
             color: #ecf0f1;
-            font-size: 18px;
+            font-size: 16px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .summary-item-title {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
         }
         
         .summary-item-value {
-            font-size: 20px;
+            font-size: 18px; /* Уменьшил для мобильных */
             font-weight: bold;
             color: #3498db;
         }
         
+        @media (min-width: 768px) {
+            .summary-item-value {
+                font-size: 20px;
+            }
+        }
+        
         /* Стили для скроллбара */
         .accelerator-content::-webkit-scrollbar {
-            width: 8px;
+            width: 5px; /* Уменьшил для мобильных */
+        }
+        
+        @media (min-width: 768px) {
+            .accelerator-content::-webkit-scrollbar {
+                width: 8px;
+            }
         }
         
         .accelerator-content::-webkit-scrollbar-track {
@@ -351,7 +542,7 @@
         }
         
         .accelerator-content::-webkit-scrollbar-thumb:hover {
-            background: rgba(41, 128, 185, 0.85);
+            background: rgba(41, 128, 185, 0.7);
         }
         
         /* Информационное сообщение */
@@ -360,8 +551,14 @@
             color: white;
             font-style: italic;
             margin-top: 10px;
-            font-size: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.85);
+            font-size: 16px; /* Уменьшил для мобильных */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        @media (min-width: 768px) {
+            .info-message {
+                font-size: 20px;
+            }
         }
         
         /* Усиливаем читаемость текста в полях ввода */
@@ -374,19 +571,57 @@
         /* Выравнивание контента в блоках опыта и энергии */
         #xp-inputs, #enka-inputs {
             flex: 1;
-            min-height: 260px;
             display: flex;
             flex-direction: column;
         }
         
-        /* Пустые строки для выравнивания */
-        .empty-row {
-            height: 48px; /* Высота одной строки с margin-bottom */
-            margin-bottom: 15px;
+        /* Убираем горизонтальный скролл на мобильных */
+        body {
+            overflow-x: hidden;
+        }
+        
+        .container {
+            overflow-x: hidden;
+        }
+        
+        /* Адаптация для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .input-grid {
+                grid-template-columns: 50px 70px 60px;
+                gap: 5px;
+            }
+            
+            .xp-enka-row {
+                grid-template-columns: 100px 70px 60px;
+                gap: 5px;
+            }
+            
+            .xp-enka-label {
+                font-size: 12px;
+                white-space: normal; /* Разрешаем перенос на очень маленьких */
+            }
+            
+            .time-label {
+                font-size: 12px;
+            }
+            
+            .input-field {
+                padding: 6px;
+                font-size: 12px;
+            }
+            
+            .result-value {
+                font-size: 12px;
+                min-width: 50px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Весь HTML и JavaScript остается без изменений -->
+    <!-- ... -->
+</body>
+</html>
     <div class="container">
         <h1>Калькулятор расходников</h1>
         
@@ -854,4 +1089,5 @@
         });
     </script>
 </body>
+
 </html>
